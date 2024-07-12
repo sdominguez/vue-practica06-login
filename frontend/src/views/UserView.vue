@@ -9,8 +9,11 @@
                     <v-text-field v-model="email" :rules="emailRules" label="Correo" required></v-text-field>
                     <v-text-field v-model="address" :rules="addressRules" label="Dirección" required></v-text-field>
                     <v-text-field v-model="phone" :rules="phoneRules" label="Teléfono" required></v-text-field>
-                    <v-text-field v-model="contrasenia" :rules="passwordRules" label="Contraseña" type="Password"
-                        required></v-text-field>
+                    <v-text-field v-model="contrasenia" :rules="passwordRules" 
+                                label="Contraseña" :type="showPassword ? 'text' : 'password'"
+                                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
+                                @click:append="passwordVisibility"
+                                required></v-text-field>
 
                     <v-btn color="green" @click="submitForm">
                         Registrar
@@ -60,6 +63,7 @@ export default {
     data() {
         return {
             isFormValid: false,
+            showPassword: false,
             name: this.nombre,
             user: this.usuario,
             email: this.correo,
@@ -90,6 +94,9 @@ export default {
         };
     },
     methods: {
+        passwordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
         submitForm() {
             if (this.$refs.form.validate()) {
                 axios.post('http://localhost:3000/nuevousuario', {
