@@ -74,7 +74,7 @@ export default {
         const token = response.headers['x-token'];
         Cookies.set('ccorreo', token);
         //sessionStorage.setItem('token', token);
-        //console.log(`x-token: ${token}`);
+        console.log(`x-token: ${token}`);
         this.$swal({
           icon: "success",
           title: `Bienvenido ${response.data.usuario}`,
@@ -83,7 +83,7 @@ export default {
         }).then(() => {
           //localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
           sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
-          //this.$router.push({ name: 'home' });
+          this.$router.push({ name: 'home' });
         }).then(()=>{
           if(this.rememberMe){
             Cookies.set('ccorreo', this.correo, { expires: 7, path: '/' });

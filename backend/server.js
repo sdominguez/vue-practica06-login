@@ -44,7 +44,10 @@ const usuarioSchema = new mongoose.Schema({
     id: Object,
     usuario: String,
     correo: String,
-    password: String
+    password: String,
+    direccion: String,
+    nombre: String,
+    telefono: String
 });
 
 // Creación de Modelos 
@@ -104,9 +107,36 @@ app.post('/rutaprotegida', async(req, res)=>{
 
 });
 
-//POST - Registrar un dato en nuestra base 
+//POST - Registrar un dato en nuestra base
+app.post('/nuevousuario', async (req, res) => {
+    try {
+        const usuario = new Usuario({
+            id: new mongoose.Types.ObjectId(),
+            ...req.body
+        });
+        const resultado = await usuario.save();
+        res.status(201).send(resultado);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
 
 //PUT - Editar Información 
+app.put('/usuarios/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const actualizaciones = req.body;
+        const usuarioActualizado = await Usuario.findByIdAndUpdate(id, actualizaciones, { new: true, runValidators: true });
+        
+        if (!usuarioActualizado) {
+            return res.status(404).send({ error: 'Usuario no encontrado' });
+        }
+        
+        res.send(usuarioActualizado);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
 
 //DELETE - Eliminar Información 
 
