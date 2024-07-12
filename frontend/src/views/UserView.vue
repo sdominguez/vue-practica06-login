@@ -1,7 +1,7 @@
 <template>
     <v-container fill-height>
         <v-row align="center" justify="center">
-        <v-col cols="8" md="4">
+        <v-col cols="10" md="6">
             <h2>Registro de Usuario</h2>
                 <v-form ref="form" v-model="isFormValid" lazy-validation>
                     <v-text-field v-model="name" :rules="nameRules" label="Nombre" required></v-text-field>
@@ -18,8 +18,11 @@
                     <v-btn color="green" @click="submitForm">
                         Registrar
                     </v-btn>
-                    <v-btn class="ml-4" color="blue" @click="resetForm">
+                    <v-btn class="ml-2" color="blue" @click="resetForm">
                         Limpiar
+                    </v-btn>
+                    <v-btn class="ml-2" @click="goBack">
+                        Volver
                     </v-btn>
                 </v-form>
             </v-col>
@@ -136,8 +139,10 @@ export default {
             this.$refs.form.reset();
             this.name = '';
             this.email = '';
-            // eslint-disable-next-line vue/no-mutating-props
             this.contrasenia = '';
+        },
+        goBack() {
+            this.$router.go(-1);
         },
     },
 }
