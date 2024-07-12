@@ -27,7 +27,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn>
+      <v-btn @click="logout">
         <span class="mr-2">Cerrar Sesión</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
@@ -48,6 +48,12 @@ export default {
   },
   beforeCreate() {
     if (!sessionStorage.getItem('usuario')) {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    logout() {
+      sessionStorage.removeItem('usuario');
       this.$router.push('/');
     }
   }
