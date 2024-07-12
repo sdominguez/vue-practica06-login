@@ -41,7 +41,6 @@ const db = mongoose.connection;
 // Definición de Esquema 
 
 const usuarioSchema = new mongoose.Schema({
-    id: Object,
     usuario: String,
     correo: String,
     password: String,
