@@ -93,7 +93,6 @@ export default {
         submitForm() {
             if (this.$refs.form.validate()) {
                 axios.post('http://localhost:3000/nuevousuario', {
-                    id: '',
                     usuario: this.user,
                     correo: this.email,
                     password: this.contrasenia,
