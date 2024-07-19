@@ -107,7 +107,7 @@ app.post('/rutaprotegida', async(req, res)=>{
 });
 
 //POST - Registrar un dato en nuestra base
-app.post('/nuevousuario', async (req, res) => {
+app.post('/new_usuario', async (req, res) => {
     try {
         const usuario = new Usuario({
             id: new mongoose.Types.ObjectId(),
@@ -117,6 +117,56 @@ app.post('/nuevousuario', async (req, res) => {
         res.status(201).send(resultado);
     } catch (error) {
         res.status(400).send(error);
+    }
+});
+
+//Buscar registro por ID
+app.post('/buscar-usuario', async(req, res)=>{
+    try{
+        const {_id} = req.body;
+        if(!_id){
+            return res.sta|(400).json({mensaje:'requiere de un ID'});
+        }
+        const usuario = await Usuario.findById(_id);
+        if(!usuario){
+            return res.status(400).json({
+                mensaje: 'ID de Usuario no fue localizado'
+            });
+        }
+        res.json(usuario);
+    }catch(error){
+        console.error('Error al buscar usuario por ID: ',error);
+        res.status(500).json({mensaje:'Error interno del servidor'});
+    }
+});
+
+
+app.put('/actualizarusuarioruta/:_id', async(req, res)=>{
+    const _id = req.params._id;
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(_id, req.body, {new : true});
+    if(usuarioActualizado){
+        res.json(usuarioActualizado);
+    }else{
+        res.status(404).json({mensaje:'usuario no fue encontrado'});
+    }
+});
+
+app.put('/actualizarusuariobody', async(req, res)=>{
+    try{
+        const {_id, nombre, correo} = req.body;
+        if(!_id ||( !nombre && !correo)){
+            return res.status(400).json({
+                mensaje: 'Se requiere proporcionar ID y al menos campos a actualizar (nombre, correo'
+            });
+        }
+        const usuarioActualizado = await Usuario.findByIdAndUpdate(_id,{nombre, correo}, {new : true});
+        if(!usuarioActualizado){
+            res.status(404).json({mensaje:'Usuario no fue encontrado'});
+        }
+        res.json(usuarioActualizado);
+    }catch(error){
+        console.error('Error al actualizar usuario por ID: ', error);
+        res.status(500).json({mensaje:'Error interno del servidor'});
     }
 });
 

@@ -77,12 +77,13 @@ export default {
         console.log(`x-token: ${token}`);
         this.$swal({
           icon: "success",
-          title: `Bienvenido ${response.data.usuario}`,
+          title: `Bienvenido ${response.data.nombre}`,
           showConfirmButton: false,
           timer: 1500
         }).then(() => {
-          //localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
-          sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+          localStorage.setItem('token', token);
+          sessionStorage.setItem('usuario', JSON.stringify(response.data.nombre));
+          sessionStorage.setItem('id', JSON.stringify(response.data._id));
           this.$router.push({ name: 'home' });
         }).then(()=>{
           if(this.rememberMe){

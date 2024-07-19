@@ -2,37 +2,21 @@
   <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        <v-img
-          :src="require('../images/Marca-Halcones-UV_fondo-claro.png')"
-          class="my-3"
-          contain
-          height="150"
-        />
+        <v-img :src="require('../images/Marca-Halcones-UV_fondo-claro.png')" class="my-3" contain height="150" />
       </v-col>
     </v-row>
 
-    <v-carousel
-    height="400"
-    show-arrows="hover"
-    cycle
-    hide-delimiter-background
-  >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
-      >
-        <div class="d-flex fill-height justify-center align-center">
-          <div class="text-h2">
-            {{ slide }} Slide
+    <v-carousel height="400" cycle hide-delimiter-background>
+      <v-carousel-item v-for="(slide, i) in slides" :key="i">
+        <v-sheet :color="colors[i]" height="100%">
+          <div class="d-flex fill-height justify-center align-center">
+            <div class="text-h2">
+              {{ slide }} Slide
+            </div>
           </div>
-        </div>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
 
   </v-container>
 </template>
