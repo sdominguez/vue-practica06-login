@@ -84,6 +84,7 @@ export default {
           localStorage.setItem('token', token);
           sessionStorage.setItem('usuario', JSON.stringify(response.data.nombre));
           sessionStorage.setItem('id', JSON.stringify(response.data._id));
+          this.$store.dispatch('login', response.data.nombre);
           this.$router.push({ name: 'home' });
         }).then(()=>{
           if(this.rememberMe){
