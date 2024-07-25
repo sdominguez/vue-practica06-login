@@ -83,7 +83,17 @@ export default {
         }).then(() => {
           localStorage.setItem('token', token);
           sessionStorage.setItem('usuario', JSON.stringify(response.data.nombre));
-          sessionStorage.setItem('id', JSON.stringify(response.data._id));
+          localStorage.setItem('token', token);
+          const userData = {
+            name: response.data.nombre,
+            user: response.data.usuario,
+            email: response.data.correo,
+            address: response.data.direccion,
+            phone: response.data.telefono,
+            contrasenia: response.data.password, 
+            id: response.data._id
+          };
+          sessionStorage.setItem('userData', JSON.stringify(userData));
           this.$store.dispatch('login', response.data.nombre);
           this.$router.push({ name: 'home' });
         }).then(()=>{

@@ -17,6 +17,7 @@
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
+    <br>
 
   </v-container>
 </template>
@@ -24,7 +25,7 @@
 <script>
   export default {
     name: 'HelloWorld',
-
+    
     data: () => ({
         colors: [
           'indigo',
@@ -41,5 +42,6 @@
           'Fifth',
         ],
     }),
+
   }
 </script>

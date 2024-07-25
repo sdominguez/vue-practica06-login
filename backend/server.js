@@ -1,6 +1,8 @@
 const express = require('express'); // npm install express 
 const mongoose = require('mongoose'); //npm install mongoose
 const bodyParser = require('body-parser'); // npm install body-parser
+const multer = require('multer'); // npm install multer
+const path = require('path'); // npm install path
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // npm install cors
@@ -52,9 +54,20 @@ const usuarioSchema = new mongoose.Schema({
 // Creación de Modelos 
 const Usuario = mongoose.model('Usuarios',usuarioSchema);
 
-//Pertenencientes a HTTP 
+const { Schema } = mongoose;
 
-//Crear nuestras urls de datos 
+//Esquema de carga de imagenes
+const photoSchema = new Schema({
+    data: Buffer,
+    contentType: String,
+  });
+  
+  const Photo = mongoose.model('Photo',photoSchema);
+  
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage });
+
+
 
 //GET -- Nos devuelve infomormación de la BD 
 // http://localhost:3000/usuarios
@@ -178,7 +191,7 @@ app.put('/usuarios/:id', async (req, res) => {
         const usuarioActualizado = await Usuario.findByIdAndUpdate(id, actualizaciones, { new: true, runValidators: true });
         
         if (!usuarioActualizado) {
-            return res.status(404).send({ error: 'Usuario no encontrado' });
+            return res.status(404).send({mensaje: 'Usuario no encontrado' });
         }
         
         res.send(usuarioActualizado);
@@ -187,8 +200,44 @@ app.put('/usuarios/:id', async (req, res) => {
     }
 });
 
+
 //DELETE - Eliminar Información 
 
+//Enpoint cargar foto
+app.post('/upload', upload.single('photo'), async (req, res) => {
+    try {
+        const newPhoto = new Photo({
+            data: req.file.buffer,
+            contentType: req.file.mimetype,
+        });
+        await newPhoto.save();
+        res.json({
+            mensaje: 'La foto ha sido guardad correctamente'
+        });
+    } catch (error) {
+        res.status(500).json({
+            mensaje: 'Error al guardar la foto'
+        });
+    }
+});
+
+//Endpoint obtener foto 
+app.get('/photo/:id', async (req, res) => {
+    try {
+        const photo = await Photo.findById(req.params.id);
+        if (!photo) {
+            return res.status(404).json({
+                mensaje: 'Recurso no encontrado',
+            })
+        }
+        res.set('Content-Type', photo.contentType);
+        res.send(photo.data);
+    } catch (error) {
+        res.status(500).json({
+            mensaje: 'Error al obtener la foto'
+        });
+    }
+});
 
 // app.use('/login', cors(corsOptions));
 

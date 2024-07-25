@@ -60,6 +60,7 @@ export default {
       // elementos de navegación
       { title: 'Home', icon: 'mdi-home' },
       { title: 'Cuenta', icon: 'mdi-account' },
+      { title: 'Foto de Perfil', icon: 'mdi-camera' },
       { title: 'Logout', icon: 'mdi-logout' },
     ],
   }),
@@ -79,6 +80,9 @@ export default {
           break;
         case 'Cuenta':
           if (currentPath !== '/user_edit') this.$router.push('/user_edit');
+          break;
+        case 'Foto de Perfil':
+          if (currentPath !== '/user_picture') this.$router.push('/user_picture');
           break;
         case 'Logout':
           this.logout();

@@ -13,12 +13,24 @@ export default new Vuex.Store({
   mutations: {
     login(state, nombre_usuario) {
       state.isLoggedIn = true;
-      state.nombre_usuario = nombre_usuario;  // Almacena el nombre del usuario al iniciar sesión
+      state.nombre_usuario = nombre_usuario;  
+      // Guardar el estado en localStorage
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('nombre_usuario', nombre_usuario);
     },
     logout(state) {
       state.isLoggedIn = false;
-      state.nombre_usuario = '';  // Limpia el nombre del usuario al cerrar sesión
-    }
+      state.nombre_usuario = '';  
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('nombre_usuario');
+    },
+    initializeStore(state) {
+      // Cargar el estado desde localStorage si está presente
+      if (localStorage.getItem('isLoggedIn')) {
+        state.isLoggedIn = true;
+        state.nombre_usuario = localStorage.getItem('nombre_usuario');
+      }
+    },
   },
   actions: {
     login({ commit }, nombre_usuario) {
@@ -30,4 +42,9 @@ export default new Vuex.Store({
   },
   modules: {
   }
-})
+  
+});
+
+// Inicializar el estado al cargar la aplicación
+//store.commit('initializeStore');
+

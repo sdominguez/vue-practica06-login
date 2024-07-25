@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import UserView from '../views/UserView.vue'
 import UserEditView from '../views/UserEditView.vue'
+import CameraView from '@/views/CameraView.vue'
 
 Vue.use(VueRouter)
 
@@ -27,7 +28,12 @@ const routes = [
     path: '/user_edit',
     name: 'user_edit',
     component: UserEditView,
-  }  
+  },
+  {
+    path: '/user_picture',
+    name: 'user_picture',
+    component: CameraView,
+  }
 ]
 
 const router = new VueRouter({
