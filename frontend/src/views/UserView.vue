@@ -33,6 +33,7 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Vue from 'vue';
 
 export default {
     name: 'ResultView',
@@ -125,7 +126,7 @@ export default {
                         title: "Oops...",
                         text: "Ocurrió un error al enviar la información",
                     });
-                    console.error(error);
+                    Vue.config.errorHandler(error, 'Error al enviar la información');
                 });
             }else{
                 this.$swal({

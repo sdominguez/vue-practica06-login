@@ -43,6 +43,7 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Vue from 'vue';
 
 export default {
   name: 'LoginView',
@@ -104,7 +105,7 @@ export default {
           }
         });
       } catch (error) {
-        console.error('Error:', error);
+        Vue.config.errorHandler(error, 'Error en login');
         this.$swal({
           icon: "error",
           title: "Oops...",

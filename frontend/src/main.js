@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import axios from 'axios';
 import '@mdi/font/css/materialdesignicons.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -11,6 +12,20 @@ Vue.use(VueSweetalert2)
 
 Vue.config.productionTip = false
 store.commit('initializeStore');
+
+// Configuración del manejador de errores global
+Vue.config.errorHandler = function (err, info) {
+  console.log('ErroHandler in action');
+  // Envía el error al backend
+  axios.post('http://localhost:3000/api/log', {
+    error: err.toString(),
+    info: info,
+    url: window.location.href
+  });
+
+  // También puedes mostrar el error en la consola
+  console.error(err);
+};
 
 new Vue({
   router,

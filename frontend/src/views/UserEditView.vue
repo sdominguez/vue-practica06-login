@@ -36,6 +36,7 @@
 
 <script>
 import axios from 'axios';
+import Vue from 'vue';
 
 export default {
   name: 'UserEditView',
@@ -125,7 +126,7 @@ export default {
                       title: "Oops...",
                       text: "Ocurrió un error al actualizar los datos",
                   });
-                  console.error(error);
+                  Vue.config.errorHandler(error, 'Error al actualizar datos del usuario');
               });
           } else {
               this.$swal({

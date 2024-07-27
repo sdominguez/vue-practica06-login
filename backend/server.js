@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // npm install cors
 const crypto = require('crypto');
+const winston = require('winston');
 
 const SECRET_KEY = crypto.randomBytes(32).toString('hex');
 
@@ -28,6 +29,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json()); // Analizar cuerpos de solicitudes en formato JSON 
+
+
+// Configuración de winston
+const logger = winston.createLogger({
+    level: 'error',
+    format: winston.format.json(),
+    transports: [
+      new winston.transports.File({ filename: path.join(__dirname, 'error.log') })
+    ]
+  });
 
 //Generar la Conexón a MongoDB
 mongoose.connect('mongodb://localhost:27017/vuejs',
@@ -51,6 +62,13 @@ const usuarioSchema = new mongoose.Schema({
     telefono: String
 });
 
+const errorSchema = new mongoose.Schema({
+    error: String,
+    info: String,
+    url: String,
+    date: { type: Date, default: Date.now }
+  });
+
 // Creación de Modelos 
 const Usuario = mongoose.model('Usuarios',usuarioSchema);
 
@@ -67,6 +85,22 @@ const photoSchema = new Schema({
   const storage = multer.memoryStorage();
   const upload = multer({ storage });
 
+
+  
+  const ErrorLog = mongoose.model('ErrorLog', errorSchema);
+  
+  app.post('/api/log', (req, res) => {
+    const { error, info, url } = req.body;
+    const errorLog = new ErrorLog({ error, info, url });
+    errorLog.save()
+      .then(() => {
+        logger.error(`Error: ${error}, Info: ${info}, URL: ${url}`);
+        res.status(200).send('Error logged');
+      })
+      .catch(err => {
+        res.status(500).send('Failed to log error');
+      });
+  });
 
 
 //GET -- Nos devuelve infomormación de la BD 

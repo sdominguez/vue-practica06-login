@@ -24,6 +24,8 @@
   </template>
 
 <script>
+import Vue from 'vue';
+
 export default {
   name: 'CameraView',
   
@@ -46,7 +48,7 @@ export default {
           this.selectedDeviceId = this.videoDevices[0].deviceId;
         }
       } catch (error) {
-        console.error('Error fetching video devices: ', error);
+        Vue.config.errorHandler(error, this, 'Error fetching video devices');
       }
     },
     async startCamera() {
@@ -59,7 +61,7 @@ export default {
         });
         this.$refs.video.srcObject = this.videoStream;
       } catch (error) {
-        console.error('Error accessing the camera: ', error);
+        Vue.config.errorHandler(error, this, 'Error accessing the camera');
       }
     },
     stopCamera() {
@@ -92,7 +94,7 @@ export default {
               const result = await response.json();
               console.log('Foto guardada: ', result);
           } catch (error) {
-              console.error('Error al cargar la foto',error);
+            Vue.config.errorHandler(error, this, 'Error al cargar la foto');
           }
       }, 'image/png');
       
@@ -113,10 +115,11 @@ export default {
                   const blob =await response.blob();
                   this.photoUrl = URL.createObjectURL(blob);
               }else{
-                  console.error('Error al obtener la foto', response.statusText);
+                  //console.error('Error al obtener la foto', response.statusText);
+                  Vue.config.errorHandler(response.status, 'Error al obtener imagen');
               }
           } catch (error) {
-              console.error('Error al obtener imagen',error)
+            Vue.config.errorHandler(error, 'Error al obtener imagen');
           }
       },
   },
